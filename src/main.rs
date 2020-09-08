@@ -8,9 +8,9 @@ mod plotter;
 
 #[derive(StructOpt, Debug)]
 struct Arguments {
-    #[structopt(name = "input", help="")]
+    #[structopt(name = "input", help="Specify usage ratio CSV file (from feasth)")]
     input_file: PathBuf,
-    #[structopt(name = "output", help="")]
+    #[structopt(name = "output", help="Specify output file. File format described using exte askdjasfkljsad asòldjk ÒLKJASÒLD JAÒSJDK laksjdòasjd")]
     output_file: PathBuf,
 }
 
