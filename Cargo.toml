@@ -1,5 +1,5 @@
 [package]
-name = "usage_ratio_plotter"
+name = "urp"
 version = "0.1.0"
 authors = ["Filippo Ranza <filipporanza@gmail.com>"]
 edition = "2018"
