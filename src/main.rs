@@ -8,12 +8,11 @@ mod plotter;
 
 #[derive(StructOpt, Debug)]
 struct Arguments {
-    #[structopt(name = "input")]
+    #[structopt(name = "input", help="")]
     input_file: PathBuf,
-    #[structopt(name = "output")]
+    #[structopt(name = "output", help="")]
     output_file: PathBuf,
 }
-
 
 fn run_plot(args: Arguments) -> Result<(), error::ProgramError> {
     let data = log_file_loader::load_status_file(&args.input_file)?;

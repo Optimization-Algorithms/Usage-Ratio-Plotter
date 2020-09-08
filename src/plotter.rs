@@ -1,13 +1,19 @@
 use plotters::prelude::*;
 
+use crate::error;
 use crate::log_file_loader::StatusValue;
 use std::cmp::Ordering;
 use std::path::Path;
 
 pub fn scatter_status(stat: &[StatusValue], name: &Path) -> Result<(), Box<dyn std::error::Error>> {
-    match Format::get_format(name) {
-        Format::PNG => generic_plotter(BitMapBackend::new(name, (640, 480)).into_drawing_area(), stat)?,
-        Format::SVG => generic_plotter(SVGBackend::new(name, (640, 480)).into_drawing_area(), stat)?,
+    match Format::get_format(name)? {
+        Format::PNG => generic_plotter(
+            BitMapBackend::new(name, (640, 480)).into_drawing_area(),
+            stat,
+        )?,
+        Format::SVG => {
+            generic_plotter(SVGBackend::new(name, (640, 480)).into_drawing_area(), stat)?
+        }
     }
 
     Ok(())
@@ -17,7 +23,6 @@ fn generic_plotter<'a, DB: DrawingBackend>(
     root: DrawingArea<DB, plotters::coord::Shift>,
     stat: &[StatusValue],
 ) -> Result<(), DrawingAreaErrorKind<DB::ErrorType>> {
-
     root.fill(&WHITE)?;
     let root = root.margin(15, 15, 15, 15);
 
@@ -41,23 +46,27 @@ fn generic_plotter<'a, DB: DrawingBackend>(
 
 enum Format {
     PNG,
-    SVG
+    SVG,
 }
 
 impl Format {
-    fn get_format(name: &Path) -> Self {
+    fn get_format(name: &Path) -> Result<Self, error::FormatError> {
         if let Some(ext) = name.extension() {
             match ext.to_str() {
-                Some("png") => Self::PNG,
-                Some("svg") => Self::SVG,
-                _ => panic!()
+                Some("png") => Ok(Self::PNG),
+                Some("svg") => Ok(Self::SVG),
+                Some(other) => Err(error::FormatError::UnknownExtension(other.to_owned())),
+                _ => panic!(),
             }
         } else {
-            panic!()
+            if let Some(name) = name.to_str() {
+                Err(error::FormatError::MissingFormat(name.to_owned()))
+            } else {
+                panic!()
+            }
         }
     }
 }
-
 
 fn convert_status(stat: &StatusValue) -> (f64, ShapeStyle) {
     match stat {

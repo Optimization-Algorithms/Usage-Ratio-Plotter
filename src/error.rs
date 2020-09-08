@@ -1,4 +1,5 @@
 use std::convert::From;
+use std::error;
 use std::fmt;
 use std::io::Error;
 use std::num::{ParseFloatError, ParseIntError};
@@ -16,6 +17,12 @@ pub enum ParseError {
     Int(ParseIntError),
     Float(ParseFloatError),
     MissingToken(usize),
+}
+
+#[derive(Debug)]
+pub enum FormatError {
+    MissingFormat(String),
+    UnknownExtension(String),
 }
 
 impl From<Error> for ProgramError {
@@ -68,3 +75,22 @@ impl fmt::Display for ParseError {
         }
     }
 }
+
+impl fmt::Display for FormatError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::MissingFormat(path) => write!(
+                f,
+                "Given file:`{}`\ndoes not have an extension\ncannot understand output format",
+                path
+            ),
+            Self::UnknownExtension(ext) => write!(
+                f,
+                "Given extension: `{}` is unknow\ncannot understand output format",
+                ext
+            ),
+        }
+    }
+}
+
+impl error::Error for FormatError {}
