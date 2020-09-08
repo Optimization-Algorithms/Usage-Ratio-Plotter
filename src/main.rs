@@ -10,7 +10,7 @@ mod plotter;
 struct Arguments {
     #[structopt(name = "input", help="Specify usage ratio CSV file (from feasth)")]
     input_file: PathBuf,
-    #[structopt(name = "output", help="Specify output file. File format described using exte askdjasfkljsad asòldjk ÒLKJASÒLD JAÒSJDK laksjdòasjd")]
+    #[structopt(name = "output", help="Specify output file. File format is understood using file extension, currently available: PNG, SVG")]
     output_file: PathBuf,
 }
 
