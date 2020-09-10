@@ -120,7 +120,7 @@ fn convert_status(stat: &StatusValue) -> (f64, ShapeStyle) {
 }
 
 fn max_ratio(stat_vec: &[StatusValue]) -> f64 {
-    stat_vec
+    let value = stat_vec
         .iter()
         .map(|s| match s {
             StatusValue::Infeasible(s) => *s,
@@ -135,5 +135,10 @@ fn max_ratio(stat_vec: &[StatusValue]) -> f64 {
                 Ordering::Less
             }
         })
-        .unwrap()
+        .unwrap();
+    if value == 0.0 {
+        1.0
+    } else {
+        value
+    }
 }
