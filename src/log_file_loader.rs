@@ -1,7 +1,5 @@
 use crate::error;
-use std::fs::File;
-use std::io::{Error, Read};
-use std::path::Path;
+
 
 #[derive(Debug, PartialEq)]
 pub enum StatusValue {
@@ -11,21 +9,11 @@ pub enum StatusValue {
     Timeout(f64),
 }
 
-pub fn load_status_file(file_name: &Path) -> Result<Vec<StatusValue>, error::ProgramError> {
-    let data = load_file_data(file_name)?;
-    parse_log_file(&data)
-}
 
-fn parse_log_file(data: &str) -> Result<Vec<StatusValue>, error::ProgramError> {
+pub fn parse_log_file(data: &str) -> Result<Vec<StatusValue>, error::ProgramError> {
     data.lines().map(parse_csv_line).collect()
 }
 
-fn load_file_data(file_name: &Path) -> Result<String, Error> {
-    let mut file = File::open(file_name)?;
-    let mut output = String::new();
-    file.read_to_string(&mut output)?;
-    Ok(output)
-}
 
 fn parse_csv_line(line: &str) -> Result<StatusValue, error::ProgramError> {
     let mut tokens = line.split(',');
