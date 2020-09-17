@@ -8,7 +8,7 @@ use std::path::Path;
 pub struct Config {
     size: (u32, u32),
     margin: u32,
-    radius: u32
+    radius: u32,
 }
 
 impl Config {
@@ -16,7 +16,7 @@ impl Config {
         Self {
             size: (0, 0),
             margin: 0,
-            radius: 0
+            radius: 0,
         }
     }
 
@@ -34,7 +34,6 @@ impl Config {
         self.radius = radius;
         self
     }
-
 }
 
 pub fn scatter_status(

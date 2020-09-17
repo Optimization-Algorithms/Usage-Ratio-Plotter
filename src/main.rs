@@ -1,6 +1,6 @@
-use std::path::PathBuf;
 use std::fs::File;
-use std::io::{Error, Read, stdin};
+use std::io::{stdin, Error, Read};
+use std::path::PathBuf;
 
 use structopt::StructOpt;
 
@@ -10,12 +10,18 @@ mod plotter;
 
 #[derive(StructOpt, Debug)]
 struct Arguments {
-    #[structopt(name = "input", help = "Specify usage ratio CSV file (from feasth). By default read from STDIN", short="-i", long="--input")]
+    #[structopt(
+        name = "input",
+        help = "Specify usage ratio CSV file (from feasth). By default read from STDIN",
+        short = "-i",
+        long = "--input"
+    )]
     input_file: Option<PathBuf>,
     #[structopt(
         name = "output",
         help = "Specify output file. File format is understood using file extension, currently available: PNG, SVG",
-        short="-o", long="--output"
+        short = "-o",
+        long = "--output"
     )]
     output_file: PathBuf,
     #[structopt(
@@ -39,8 +45,13 @@ struct Arguments {
         default_value = "15"
     )]
     margin: u32,
-    #[structopt(short="-r", long = "--radius", help="Specify scatter radius", default_value="2")]
-    radius: u32
+    #[structopt(
+        short = "-r",
+        long = "--radius",
+        help = "Specify scatter radius",
+        default_value = "2"
+    )]
+    radius: u32,
 }
 
 fn build_config(args: &Arguments) -> plotter::Config {
@@ -49,7 +60,6 @@ fn build_config(args: &Arguments) -> plotter::Config {
         .set_margin(args.margin)
         .set_radius(args.radius)
 }
-
 
 fn load_file_data(file: &mut dyn Read) -> Result<String, Error> {
     let mut output = String::new();
@@ -77,12 +87,8 @@ fn print_warning(file_name: &Option<PathBuf>) {
     } else {
         "<STDIN>"
     };
-    println!(
-            "WARNING: Given data log is empty: {}",
-            name
-        );
+    println!("WARNING: Given data log is empty: {}", name);
 }
-
 
 fn run_plot(args: Arguments) -> Result<(), error::ProgramError> {
     let csv_string = load_csv_data(&args.input_file)?;

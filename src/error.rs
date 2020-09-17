@@ -60,7 +60,11 @@ impl fmt::Display for ProgramError {
         match self {
             Self::InputOutput(io_err) => write!(f, "IO Error: {}", io_err),
             Self::ParseError(parse_err) => write!(f, "Parse Error: {}", parse_err),
-            Self::UnknowStatus(s) => write!(f, "Read Unknown Status Value: {}\nExpect: ``, `0`, `1`, `2`", s),
+            Self::UnknowStatus(s) => write!(
+                f,
+                "Read Unknown Status Value: {}\nExpect: ``, `0`, `1`, `2`",
+                s
+            ),
             Self::PlotError(plot_err) => write!(f, "Plot Error: {}", plot_err),
         }
     }

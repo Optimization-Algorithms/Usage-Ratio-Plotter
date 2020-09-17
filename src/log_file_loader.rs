@@ -1,6 +1,5 @@
 use crate::error;
 
-
 #[derive(Debug, PartialEq)]
 pub enum StatusValue {
     Infeasible(f64),
@@ -9,11 +8,9 @@ pub enum StatusValue {
     Timeout(f64),
 }
 
-
 pub fn parse_log_file(data: &str) -> Result<Vec<StatusValue>, error::ProgramError> {
     data.lines().map(parse_csv_line).collect()
 }
-
 
 fn parse_csv_line(line: &str) -> Result<StatusValue, error::ProgramError> {
     let mut tokens = line.split(',');
